@@ -2,10 +2,25 @@ from flask import Flask, request, jsonify
 from model import load_model
 import logging
 import boto3
+import json
 
 app = Flask(__name__)
-logging.basicConfig(level=logging.INFO)
+#logging.basicConfig(level=logging.INFO)
 model = load_model()
+
+class JSONFormatter(logging.Formatter):
+    def format(self, record):
+        return json.dumps({
+            'timestamp': self.formatTime(record),
+            'level': record.levelname,
+            'message': record.getMessage()
+        })
+
+handler = logging.StreamHandler()
+handler.setFormatter(JSONFormatter())
+app.logger.addHandler(handler)
+app.logger.setLevel(logging.INFO)
+
 
 # CloudWatch client for custom metrics
 cloudwatch = boto3.client('cloudwatch', region_name='us-east-2')
