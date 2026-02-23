@@ -40,10 +40,16 @@ def health(): return jsonify({'status': 'healthy'}), 200
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    data = request.json['features']
-    prediction = model.predict([data])[0]
-    app.logger.info(f'Prediction: {prediction}')
-    return jsonify({'prediction': int(prediction)})
+    try:
+        data = request.json['features']
+        if not data:
+            return jsonify({'error': 'No features provided'}), 400
+        prediction = model.predict([data])[0]
+        app.logger.info(f'Prediction made: {prediction}')
+        return jsonify({'prediction': int(prediction)})
+    except Exception as e:
+        app.logger.error(f'Prediction error: {str(e)}')
+        return jsonify({'error': 'Internal server error'}), 500
 
 # This catches all 500 errors and logs to CloudWatch
 @app.errorhandler(500)

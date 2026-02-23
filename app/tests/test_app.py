@@ -23,5 +23,4 @@ def test_predict_valid(client):
 def test_predict_empty(client):
     response = client.post('/predict',
         json={'features': []})
-    # Accept either 500 (handled) or 500 (unhandled)
-    assert response.status_code in [400, 500]
+    assert response.status_code == 400
