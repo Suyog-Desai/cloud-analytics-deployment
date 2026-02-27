@@ -243,4 +243,4 @@ Content-Type: application/json
 
 ## 📅 Timeline
 
-Built as part of Cloud & DevOps portfolio — Summer 2025 / February 2026
+Built as part of Cloud & DevOps portfolio — February 2026
